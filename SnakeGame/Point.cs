@@ -6,7 +6,18 @@ using System.Threading.Tasks;
 
 namespace SnakeGame
 {
-    class Point
+    public class Point
     {
+        public Point(int x, int y)
+        {
+            X = x;
+            Y = y;
+            Width = Settings.Width;
+            Height = Settings.Height;
+        }
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
     }
 }
