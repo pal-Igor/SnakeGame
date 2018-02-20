@@ -12,14 +12,14 @@ namespace SnakeGame
 {
     public partial class FormMain : Form
     {
-        private List<Point> Snake;
+        Snake Snake1 = new Snake(1,2);
         private Point Food;
         private Random random;
         public FormMain()
         {
             InitializeComponent();
 
-            Snake = new List<Point>();
+            
             Food = new Point(1, 2);
             random = new Random();
 
@@ -40,11 +40,8 @@ namespace SnakeGame
             Settings.SetToDefaultSettings();
 
             //Create new player object
-            Snake.Clear();
-            Point head = new Point(1,2);
-            Point t = new Point(0,0);
-            Snake.Add(head);
-            Snake.Add(t);
+            Snake1.Clear();
+            Snake1.CreateHead();
 
             lblScore.Text = Settings.Score.ToString();
             GenerateFood();
@@ -55,9 +52,9 @@ namespace SnakeGame
             int maxXPos = panField.Size.Width / Settings.Width;
             int maxYPos = panField.Size.Height / Settings.Height;
             
-            for (int i = 0; i < Snake.Count; i++)
+            for (int i = 0; i < Snake1.MasSnake.Count; i++)
             {
-                if (Food.X != Snake[i].X && Food.Y != Snake[i].Y)
+                if (Food.X != Snake1.MasSnake[i].X && Food.Y != Snake1.MasSnake[i].Y)
                 {
                     continue;
                 }
@@ -104,7 +101,7 @@ namespace SnakeGame
 
         private void MovePlayer()
         {
-            for (int i = Snake.Count - 1; i >= 0; i--)
+            for (int i = Snake1.MasSnake.Count - 1; i >= 0; i--)
             {
                 //Move head
                 if (i == 0)
@@ -112,16 +109,16 @@ namespace SnakeGame
                     switch (Settings.Direction)
                     {
                         case Direction.Right:
-                            Snake[i].X++;
+                            Snake1.MasSnake[i].X++;
                             break;
                         case Direction.Left:
-                            Snake[i].X--;
+                            Snake1.MasSnake[i].X--;
                             break;
                         case Direction.Up:
-                            Snake[i].Y--;
+                            Snake1.MasSnake[i].Y--;
                             break;
                         case Direction.Down:
-                            Snake[i].Y++;
+                            Snake1.MasSnake[i].Y++;
                             break;
                     }
 
@@ -130,33 +127,36 @@ namespace SnakeGame
                     int maxYPos = panField.Size.Height / Settings.Height;
 
                     //Detect collission with game borders.
-                    if (Snake[i].X < 0 || Snake[i].Y < 0
-                        || Snake[i].X >= maxXPos || Snake[i].Y >= maxYPos)
+                    if (Snake1.MasSnake[i].X < 0 || Snake1.MasSnake[i].Y < 0
+                        || Snake1.MasSnake[i].X >= maxXPos || Snake1.MasSnake[i].Y >= maxYPos)
                     {
-                        Die();
+                        Snake1.Die();
                     }
 
                     //Detect collission with body
-                    for (int j = 1; j < Snake.Count; j++)
+                    for (int j = 1; j < Snake1.MasSnake.Count; j++)
                     {
-                        if (Snake[i].X == Snake[j].X &&
-                           Snake[i].Y == Snake[j].Y)
+                        if (Snake1.MasSnake[i].X == Snake1.MasSnake[i].X &&
+                           Snake1.MasSnake[i].Y == Snake1.MasSnake[i].Y)
                         {
-                            Die();
+                            Snake1.Die();
                         }
                     }
 
                     //Detect collision with food piece
-                    if (Snake[0].X == Food.X && Snake[0].Y == Food.Y)
+                    if (Snake1.MasSnake[0].X == Food.X && Snake1.MasSnake[0].Y == Food.Y)
                     {
-                        Eat();
+                        Snake1.Eat();
+                        lblScore.Text = Settings.Score.ToString();
+
+                        GenerateFood();
                     }
                 }
                 else
                 {
                     //Move body
-                    Snake[i].X = Snake[i - 1].X;
-                    Snake[i].Y = Snake[i - 1].Y;
+                    Snake1.MasSnake[i].X = Snake1.MasSnake[i -1].X;
+                    Snake1.MasSnake[i].Y = Snake1.MasSnake[i -1].Y;
                 }
             }
         }
@@ -168,7 +168,7 @@ namespace SnakeGame
             if (!Settings.GameOver)
             {
                 //Draw snake
-                for (int i = 0; i < Snake.Count; i++)
+                for (int i = 0; i < Snake1.MasSnake.Count; i++)
                 {
                     Brush snakeColour;
                     if (i == 0)
@@ -186,8 +186,8 @@ namespace SnakeGame
                         snakeColour = new SolidBrush(myColor);
                     }
                     //Draw snake
-                    canvas.FillRectangle(snakeColour, new Rectangle(Snake[i].X * Settings.Width,
-                        Snake[i].Y * Settings.Height, Settings.Width, Settings.Height));
+                    canvas.FillRectangle(snakeColour, new Rectangle(Snake1.MasSnake[i].X * Settings.Width,
+                         Snake1.MasSnake[i].Y * Settings.Height, Settings.Width, Settings.Height));
 
                     //Draw Food
                     canvas.FillRectangle(Brushes.Orange, new Rectangle(Food.X * Settings.Width,
@@ -215,23 +215,6 @@ namespace SnakeGame
         private void FormMain_KeyUp(object sender, KeyEventArgs e)
         {
             Input.ChangeState(e.KeyCode, false);
-        }
-
-        private void Eat()
-        {
-            //Add point to body
-            Point food = new Point(Snake[Snake.Count - 1].X, Snake[Snake.Count - 1].Y);
-            Snake.Add(food);
-
-            //Update Score
-            Settings.Score += Settings.Points;
-            lblScore.Text = Settings.Score.ToString();
-
-            GenerateFood();
-        }
-        private void Die()
-        {
-            Settings.GameOver = true;
         }
     }
 }
