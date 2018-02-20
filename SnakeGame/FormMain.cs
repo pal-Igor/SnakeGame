@@ -131,24 +131,16 @@ namespace SnakeGame
                     int maxXPos = panField.Size.Width / Settings.Width;
                     int maxYPos = panField.Size.Height / Settings.Height;
 
-                    //Detect collission with game borders.
-                    if (Snake1[i].X < 0 || Snake1[i].Y < 0
-                        || Snake1[i].X >= maxXPos || Snake1[i].Y >= maxYPos)
-                    {
-                        Snake1.Die();
-                    }
-
-                    if (Snake1.IsHeatTail())
+                    //Detect collission with game borders and snake tail.
+                    if (Snake1.IsHitBorder(maxXPos, maxYPos) || Snake1.IsHitTail())
                     {
                         Snake1.Die();
                     }
 
                     //Detect collision with food piece
-                    if (Snake1[0].X == Food.X && Snake1[0].Y == Food.Y)
+                    if (Snake1.Eat(Food))
                     {
-                        Snake1.Eat();
                         lblScore.Text = Settings.Score.ToString();
-
                         GenerateFood();
                     }
                 }

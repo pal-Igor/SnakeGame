@@ -33,18 +33,21 @@ namespace SnakeGame
         {
             MasSnake.Clear();
         }
-        public void Eat()
+        public bool Eat(Point food)
         {
-            Point food = new Point(MasSnake[MasSnake.Count - 1].X, MasSnake[MasSnake.Count - 1].Y);
-            MasSnake.Add(food);
-
-            Settings.Score += Settings.Points;
+            if (MasSnake[0].X == food.X && MasSnake[0].Y == food.Y)
+            {
+                MasSnake.Add(food);
+                Settings.Score += Settings.Points;
+                return true;
+            }
+            return false;            
         }
         public void Die()
         {
             Settings.GameOver = true;
         }
-        public bool IsHeatTail()
+        public bool IsHitTail()
         {
             for (int i = 0; i < MasSnake.Count; i++)
             {
@@ -57,6 +60,18 @@ namespace SnakeGame
                     }
                 }
                 return false;
+            }
+            return false;
+        }
+        public bool IsHitBorder(int width, int height)
+        {
+            for (int i = 0; i < MasSnake.Count; i++)
+            {
+                if (MasSnake[i].X < 0 || MasSnake[i].Y < 0
+                        || MasSnake[i].X >= width || MasSnake[i].Y >= height)
+                {
+                    return true;
+                }
             }
             return false;
         }
