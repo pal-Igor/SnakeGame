@@ -12,32 +12,37 @@ namespace SnakeGame
 {
     public partial class FormMain : Form
     {
-        Snake Snake1 = new Snake(1,2);
+        Snake Snake1;
         private Point Food;
         private Random random;
         public FormMain()
         {
             InitializeComponent();
 
-            
+            Snake1 = new Snake(1, 2);
             Food = new Point(1, 2);
             random = new Random();
 
             //Установка скорости и таймера
-            gameTimer.Interval = 1000 / Settings.Speed;
+            gameTimer.Interval = 500 / Settings.Speed;
             gameTimer.Tick += UpdateScreen;
             gameTimer.Start();
+
+            trackBar1.Value = Settings.Speed;
 
             StartGame();
         }
         private void StartGame()
         {
+            button1.Visible = false;
             label2.Visible = false;
-            label3.Visible = false;
             lblGameOver.Visible = false;
+            trackBar1.Enabled = false;
 
             //Set settings to default
             Settings.SetToDefaultSettings();
+            Settings.Speed = trackBar1.Value;
+            gameTimer.Interval = 500 / Settings.Speed;
 
             //Create new player object
             Snake1.Clear();
@@ -136,8 +141,8 @@ namespace SnakeGame
                     //Detect collission with body
                     for (int j = 1; j < Snake1.MasSnake.Count; j++)
                     {
-                        if (Snake1.MasSnake[i].X == Snake1.MasSnake[i].X &&
-                           Snake1.MasSnake[i].Y == Snake1.MasSnake[i].Y)
+                        if (Snake1.MasSnake[i].X == Snake1.MasSnake[j].X &&
+                           Snake1.MasSnake[i].Y == Snake1.MasSnake[j].Y)
                         {
                             Snake1.Die();
                         }
@@ -167,6 +172,7 @@ namespace SnakeGame
 
             if (!Settings.GameOver)
             {
+                int shade = 60;
                 //Draw snake
                 for (int i = 0; i < Snake1.MasSnake.Count; i++)
                 {
@@ -175,16 +181,12 @@ namespace SnakeGame
                     {
                         snakeColour = Brushes.OrangeRed;     //Draw head
                     }
-                    else if (i % 2 == 0)
-                    {
-                        Color myColor = Color.FromArgb(60, 60, 60);
-                        snakeColour = new SolidBrush(myColor);    //Rest of body
-                    }
                     else
                     {
-                        Color myColor = Color.FromArgb(75, 75, 75);
-                        snakeColour = new SolidBrush(myColor);
+                        Color myColor = Color.FromArgb(shade, shade, shade);
+                        snakeColour = new SolidBrush(myColor);    //Rest of body
                     }
+
                     //Draw snake
                     canvas.FillRectangle(snakeColour, new Rectangle(Snake1.MasSnake[i].X * Settings.Width,
                          Snake1.MasSnake[i].Y * Settings.Height, Settings.Width, Settings.Height));
@@ -192,6 +194,7 @@ namespace SnakeGame
                     //Draw Food
                     canvas.FillRectangle(Brushes.Orange, new Rectangle(Food.X * Settings.Width,
                         Food.Y * Settings.Height, Settings.Width, Settings.Height));
+                    shade++;
                 }
             }
             else
@@ -199,10 +202,10 @@ namespace SnakeGame
                 string s1 = "Игра окончена\nВаш финальный счет: ";
                 lblGameOver.Text = s1;
                 label2.Text = Settings.Score.ToString();
-                label3.Text = "\nНажмите <Enter>\n для начала новой игры";
 
+                trackBar1.Enabled = true;
                 label2.Visible = true;
-                label3.Visible = true;
+                button1.Visible = true;
                 lblGameOver.Visible = true;
             }
         }
@@ -215,6 +218,16 @@ namespace SnakeGame
         private void FormMain_KeyUp(object sender, KeyEventArgs e)
         {
             Input.ChangeState(e.KeyCode, false);
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            label3.Text = String.Format("{0}", trackBar1.Value);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            StartGame();
         }
     }
 }
