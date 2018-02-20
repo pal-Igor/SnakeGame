@@ -44,5 +44,21 @@ namespace SnakeGame
         {
             Settings.GameOver = true;
         }
+        public bool IsHeatTail()
+        {
+            for (int i = 0; i < MasSnake.Count; i++)
+            {
+                for (int j = 1; j < MasSnake.Count; j++)
+                {
+                    if (MasSnake[i].X == MasSnake[j].X &&
+                       MasSnake[i].Y == MasSnake[j].Y)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            return false;
+        }
     }
 }

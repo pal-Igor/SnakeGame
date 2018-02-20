@@ -138,14 +138,9 @@ namespace SnakeGame
                         Snake1.Die();
                     }
 
-                    //Detect collission with body
-                    for (int j = 1; j < Snake1.MasSnake.Count; j++)
+                    if (Snake1.IsHeatTail())
                     {
-                        if (Snake1[i].X == Snake1[j].X &&
-                           Snake1[i].Y == Snake1[j].Y)
-                        {
-                            Snake1.Die();
-                        }
+                        Snake1.Die();
                     }
 
                     //Detect collision with food piece
