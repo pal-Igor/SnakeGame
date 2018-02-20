@@ -59,12 +59,12 @@ namespace SnakeGame
             
             for (int i = 0; i < Snake1.MasSnake.Count; i++)
             {
-                if (Food.X != Snake1.MasSnake[i].X && Food.Y != Snake1.MasSnake[i].Y)
+                if (Food.X != Snake1[i].X && Food.Y != Snake1[i].Y)
                 {
                     continue;
                 }
-
                 Food = new Point(random.Next(0, maxXPos), random.Next(0, maxYPos));
+
             }            
         }
 
@@ -114,16 +114,16 @@ namespace SnakeGame
                     switch (Settings.Direction)
                     {
                         case Direction.Right:
-                            Snake1.MasSnake[i].X++;
+                            Snake1[i].X++;
                             break;
                         case Direction.Left:
-                            Snake1.MasSnake[i].X--;
+                            Snake1[i].X--;
                             break;
                         case Direction.Up:
-                            Snake1.MasSnake[i].Y--;
+                            Snake1[i].Y--;
                             break;
                         case Direction.Down:
-                            Snake1.MasSnake[i].Y++;
+                            Snake1[i].Y++;
                             break;
                     }
 
@@ -132,8 +132,8 @@ namespace SnakeGame
                     int maxYPos = panField.Size.Height / Settings.Height;
 
                     //Detect collission with game borders.
-                    if (Snake1.MasSnake[i].X < 0 || Snake1.MasSnake[i].Y < 0
-                        || Snake1.MasSnake[i].X >= maxXPos || Snake1.MasSnake[i].Y >= maxYPos)
+                    if (Snake1[i].X < 0 || Snake1[i].Y < 0
+                        || Snake1[i].X >= maxXPos || Snake1[i].Y >= maxYPos)
                     {
                         Snake1.Die();
                     }
@@ -141,15 +141,15 @@ namespace SnakeGame
                     //Detect collission with body
                     for (int j = 1; j < Snake1.MasSnake.Count; j++)
                     {
-                        if (Snake1.MasSnake[i].X == Snake1.MasSnake[j].X &&
-                           Snake1.MasSnake[i].Y == Snake1.MasSnake[j].Y)
+                        if (Snake1[i].X == Snake1[j].X &&
+                           Snake1[i].Y == Snake1[j].Y)
                         {
                             Snake1.Die();
                         }
                     }
 
                     //Detect collision with food piece
-                    if (Snake1.MasSnake[0].X == Food.X && Snake1.MasSnake[0].Y == Food.Y)
+                    if (Snake1[0].X == Food.X && Snake1[0].Y == Food.Y)
                     {
                         Snake1.Eat();
                         lblScore.Text = Settings.Score.ToString();
@@ -160,8 +160,8 @@ namespace SnakeGame
                 else
                 {
                     //Move body
-                    Snake1.MasSnake[i].X = Snake1.MasSnake[i -1].X;
-                    Snake1.MasSnake[i].Y = Snake1.MasSnake[i -1].Y;
+                    Snake1[i].X = Snake1[i -1].X;
+                    Snake1[i].Y = Snake1[i -1].Y;
                 }
             }
         }
@@ -172,10 +172,13 @@ namespace SnakeGame
 
             if (!Settings.GameOver)
             {
-                int shade = 60;
+                int r = 255;
+                int g = 70;
+                int b = 0;
                 //Draw snake
                 for (int i = 0; i < Snake1.MasSnake.Count; i++)
                 {
+                    
                     Brush snakeColour;
                     if (i == 0)
                     {
@@ -183,18 +186,28 @@ namespace SnakeGame
                     }
                     else
                     {
-                        Color myColor = Color.FromArgb(shade, shade, shade);
+                        Color myColor = Color.FromArgb(r, g, b);
                         snakeColour = new SolidBrush(myColor);    //Rest of body
                     }
 
                     //Draw snake
-                    canvas.FillRectangle(snakeColour, new Rectangle(Snake1.MasSnake[i].X * Settings.Width,
-                         Snake1.MasSnake[i].Y * Settings.Height, Settings.Width, Settings.Height));
+                    canvas.FillRectangle(snakeColour, new Rectangle(Snake1[i].X * Settings.Width,
+                         Snake1[i].Y * Settings.Height, Settings.Width, Settings.Height));
 
                     //Draw Food
                     canvas.FillRectangle(Brushes.Orange, new Rectangle(Food.X * Settings.Width,
                         Food.Y * Settings.Height, Settings.Width, Settings.Height));
-                    shade++;
+                    if (g > 0)
+                    {
+                        g -= 7;
+                    }
+                    else
+                    {
+                        g += 7;
+                    }
+                    r -= 2;
+                    
+                    b += 3;
                 }
             }
             else
@@ -203,6 +216,7 @@ namespace SnakeGame
                 lblGameOver.Text = s1;
                 label2.Text = Settings.Score.ToString();
 
+                button1.Focus();
                 trackBar1.Enabled = true;
                 label2.Visible = true;
                 button1.Visible = true;
@@ -217,17 +231,22 @@ namespace SnakeGame
 
         private void FormMain_KeyUp(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (e.Control)
+                    button1.PerformClick();
+            }
             Input.ChangeState(e.KeyCode, false);
-        }
-
-        private void trackBar1_Scroll(object sender, EventArgs e)
-        {
-            label3.Text = String.Format("{0}", trackBar1.Value);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             StartGame();
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            label3.Text = trackBar1.Value.ToString();
         }
     }
 }

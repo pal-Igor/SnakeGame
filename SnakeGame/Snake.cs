@@ -15,6 +15,11 @@ namespace SnakeGame
             MasSnake.Add(new Point(x, y));
         }
 
+        public Point this[int i]
+        {
+            set { MasSnake[i] = value; }
+            get { return MasSnake[i]; }
+        }
         public List<Point> MasSnake { get; set; }
         public int X { get; set; }
         public int Y { get; set; }

@@ -166,6 +166,8 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblScore);
             this.Controls.Add(this.panField);
+            this.MaximumSize = new System.Drawing.Size(697, 548);
+            this.MinimumSize = new System.Drawing.Size(697, 548);
             this.Name = "FormMain";
             this.Text = "Snakeeee by Man_With_A_Big_Letter";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormMain_KeyDown);
