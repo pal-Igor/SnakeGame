@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SnakeGame.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -35,7 +36,6 @@ namespace SnakeGame
             gameTimer.Start();
 
             //trackBar1.Value = Settings.Speed;
-
             StartGame();
         }
         private void StartGame()
@@ -116,8 +116,11 @@ namespace SnakeGame
                 Snake1.DrawSnake(field);
 
                 //Draw Food
-                field.FillRectangle(Brushes.Orange, new Rectangle(Food.X * Settings.Width, Food.Y * Settings.Height, 
+                field.FillRectangle(Brushes.Orange, new Rectangle(Food.X * Settings.Width, Food.Y * Settings.Height,
                     Settings.Width, Settings.Height));
+                //Image newImage = Resources.peach;
+                //field.DrawImage(newImage, Food.X * Settings.Width, Food.Y * Settings.Height,
+                //    Settings.Width, Settings.Height);
             }
             else
             {
