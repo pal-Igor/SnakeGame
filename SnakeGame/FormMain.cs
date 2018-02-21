@@ -108,6 +108,7 @@ namespace SnakeGame
 
         private void panField_Paint(object sender, PaintEventArgs e)
         {
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             Graphics field = e.Graphics;
 
             if (Snake1.IsAlive)
@@ -115,7 +116,7 @@ namespace SnakeGame
                 Snake1.DrawSnake(field);
 
                 //Draw Food
-                field.FillRectangle(Brushes.Orange, new Rectangle(Food.X * Settings.Width, Food.Y * Settings.Height, 
+                field.FillRectangle(Brushes.Orange, new Rectangle(Food.X * Settings.Width, Food.Y * Settings.Height,
                     Settings.Width, Settings.Height));
             }
             else

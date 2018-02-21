@@ -12,8 +12,13 @@ namespace SnakeGame
     {
         public Snake()
         {
+            snakeColor = new SnakeColor(255, 70, 0);
             CreateHead();
         }
+        private int intervalR = 1;
+        private int intervalG = 1;
+        private int intervalB = 1;
+        public SnakeColor snakeColor { get; set; }
         protected List<Point> masSnake { get; set; } = new List<Point>();
         public Direction Direction = Direction.Down;
         public bool IsAlive { get; protected set; } = true;
@@ -60,9 +65,9 @@ namespace SnakeGame
         {
             for (int i = 0; i < masSnake.Count; i++)
             {
-                if (masSnake[i].X < 0 || 
-                    masSnake[i].Y < 0 || 
-                    masSnake[i].X >= maxXPos || 
+                if (masSnake[i].X < 0 ||
+                    masSnake[i].Y < 0 ||
+                    masSnake[i].X >= maxXPos ||
                     masSnake[i].Y >= maxYPos)
                 {
                     return true;
@@ -114,14 +119,14 @@ namespace SnakeGame
         }
         public void DrawSnake(Graphics field)
         {
-            var localSnakeColor = new SnakeColor(255, 70, 0);
+            var localSnakeColor = snakeColor;
             //Draw snake
             foreach (var snakeItem in masSnake)
             {
                 Brush snakeColour;
                 if (snakeItem == masSnake.First())
                 {
-                    snakeColour = Brushes.DarkOrange;     //Draw head
+                    snakeColour = Brushes.OrangeRed;     //Draw head
                 }
                 else
                 {
@@ -133,18 +138,36 @@ namespace SnakeGame
                 field.FillRectangle(snakeColour, new Rectangle(snakeItem.X * Settings.Width,
                      snakeItem.Y * Settings.Height, Settings.Width, Settings.Height));
 
+                int tempR = localSnakeColor.R - intervalR;
+                int tempG = localSnakeColor.G - intervalG;
+                int tempB = localSnakeColor.B - intervalB;
 
-                if (localSnakeColor.G > 0)
+                if (tempR < 0 || tempR > 255)
                 {
-                    localSnakeColor.G -= 7;
+                    intervalR = -intervalR;
                 }
                 else
                 {
-                    localSnakeColor.G += 7;
+                    localSnakeColor.R = tempR;
                 }
 
-                localSnakeColor.R -= 2;
-                localSnakeColor.B += 3;
+                if (tempG < 0 || tempG > 255)
+                {
+                    intervalG = -intervalG;
+                }
+                else
+                {
+                    localSnakeColor.G = tempG;
+                }
+
+                if (tempB < 0 || tempB > 255)
+                {
+                    intervalB = -intervalB;
+                }
+                else
+                {
+                    localSnakeColor.B = tempB;
+                }
             }
         }
         public void SetDirection()
