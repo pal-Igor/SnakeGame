@@ -121,7 +121,7 @@ namespace SnakeGame
                 Brush snakeColour;
                 if (snakeItem == masSnake.First())
                 {
-                    snakeColour = Brushes.DarkOrange;     //Draw head
+                    snakeColour = Brushes.OrangeRed;     //Draw head
                 }
                 else
                 {

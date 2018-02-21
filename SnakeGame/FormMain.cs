@@ -108,6 +108,7 @@ namespace SnakeGame
 
         private void panField_Paint(object sender, PaintEventArgs e)
         {
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             Graphics field = e.Graphics;
 
             if (Snake1.IsAlive)
