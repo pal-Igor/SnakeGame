@@ -12,6 +12,8 @@ namespace SnakeGame
 {
     public partial class FormMain : Form
     {
+        int maxXPos;
+        int maxYPos;
         Snake Snake1;
         private Point Food;
         private Random random;
@@ -22,6 +24,10 @@ namespace SnakeGame
             Snake1 = new Snake(1, 2);
             Food = new Point(1, 2);
             random = new Random();
+
+            //Get maximum X and Y Pos
+            maxXPos = panField.Size.Width / Settings.Width;
+            maxYPos = panField.Size.Height / Settings.Height;
 
             //Установка скорости и таймера
             gameTimer.Interval = 500 / Settings.Speed;
@@ -54,9 +60,6 @@ namespace SnakeGame
 
         private void GenerateFood()
         {
-            int maxXPos = panField.Size.Width / Settings.Width;
-            int maxYPos = panField.Size.Height / Settings.Height;
-
             Food = new Point(random.Next(0, maxXPos), random.Next(0, maxYPos));
 
             //for (int i = 0; i < Snake1.MasSnake.Count; i++)
@@ -128,11 +131,6 @@ namespace SnakeGame
                             Snake1[i].Y++;
                             break;
                     }
-
-                    //Get maximum X and Y Pos
-                    int maxXPos = panField.Size.Width / Settings.Width;
-                    int maxYPos = panField.Size.Height / Settings.Height;
-
                     //Detect collission with game borders and snake tail.
                     if (Snake1.IsHitBorder(maxXPos, maxYPos) || Snake1.IsHitTail())
                     {
