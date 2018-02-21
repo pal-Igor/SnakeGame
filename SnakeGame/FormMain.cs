@@ -34,7 +34,7 @@ namespace SnakeGame
         }
         private void StartGame()
         {
-            button1.Visible = false;
+            replay.Visible = false;
             label2.Visible = false;
             lblGameOver.Visible = false;
             trackBar1.Enabled = false;
@@ -56,16 +56,18 @@ namespace SnakeGame
         {
             int maxXPos = panField.Size.Width / Settings.Width;
             int maxYPos = panField.Size.Height / Settings.Height;
-            
-            for (int i = 0; i < Snake1.MasSnake.Count; i++)
-            {
-                if (Food.X != Snake1[i].X && Food.Y != Snake1[i].Y)
-                {
-                    continue;
-                }
-                Food = new Point(random.Next(0, maxXPos), random.Next(0, maxYPos));
 
-            }            
+            Food = new Point(random.Next(0, maxXPos), random.Next(0, maxYPos));
+
+            //for (int i = 0; i < Snake1.MasSnake.Count; i++)
+            //{
+            //    if (Food.X != Snake1[i].X && Food.Y != Snake1[i].Y)
+            //    {
+            //        continue;
+            //    }
+            //    Food = new Point(random.Next(0, maxXPos), random.Next(0, maxYPos));
+            //}
+            
         }
 
         private void UpdateScreen(object sender, EventArgs e)
@@ -101,7 +103,7 @@ namespace SnakeGame
                 MovePlayer();
             }
 
-            panField.Invalidate();
+            panField.Refresh();
         }
 
         private void MovePlayer()
@@ -155,7 +157,7 @@ namespace SnakeGame
 
         private void panField_Paint(object sender, PaintEventArgs e)
         {
-            Graphics canvas = panField.CreateGraphics();
+            Graphics field = panField.CreateGraphics();
 
             if (!Settings.GameOver)
             {
@@ -165,7 +167,6 @@ namespace SnakeGame
                 //Draw snake
                 for (int i = 0; i < Snake1.MasSnake.Count; i++)
                 {
-                    
                     Brush snakeColour;
                     if (i == 0)
                     {
@@ -178,11 +179,11 @@ namespace SnakeGame
                     }
 
                     //Draw snake
-                    canvas.FillRectangle(snakeColour, new Rectangle(Snake1[i].X * Settings.Width,
+                    field.FillRectangle(snakeColour, new Rectangle(Snake1[i].X * Settings.Width,
                          Snake1[i].Y * Settings.Height, Settings.Width, Settings.Height));
 
                     //Draw Food
-                    canvas.FillRectangle(Brushes.Orange, new Rectangle(Food.X * Settings.Width,
+                    field.FillRectangle(Brushes.Orange, new Rectangle(Food.X * Settings.Width,
                         Food.Y * Settings.Height, Settings.Width, Settings.Height));
                     if (g > 0)
                     {
@@ -192,8 +193,8 @@ namespace SnakeGame
                     {
                         g += 7;
                     }
+
                     r -= 2;
-                    
                     b += 3;
                 }
             }
@@ -203,10 +204,10 @@ namespace SnakeGame
                 lblGameOver.Text = s1;
                 label2.Text = Settings.Score.ToString();
 
-                button1.Focus();
+                replay.Focus();
                 trackBar1.Enabled = true;
                 label2.Visible = true;
-                button1.Visible = true;
+                replay.Visible = true;
                 lblGameOver.Visible = true;
             }
         }
@@ -221,7 +222,7 @@ namespace SnakeGame
             if (e.KeyCode == Keys.Enter)
             {
                 if (e.Control)
-                    button1.PerformClick();
+                    replay.PerformClick();
             }
             Input.ChangeState(e.KeyCode, false);
         }

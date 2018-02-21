@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panField = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
+            this.replay = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.lblGameOver = new System.Windows.Forms.Label();
             this.gameTimer = new System.Windows.Forms.Timer(this.components);
@@ -47,7 +47,7 @@
             // 
             this.panField.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
             this.panField.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.panField.Controls.Add(this.button1);
+            this.panField.Controls.Add(this.replay);
             this.panField.Controls.Add(this.label2);
             this.panField.Controls.Add(this.lblGameOver);
             this.panField.Location = new System.Drawing.Point(4, 5);
@@ -56,22 +56,22 @@
             this.panField.TabIndex = 2;
             this.panField.Paint += new System.Windows.Forms.PaintEventHandler(this.panField_Paint);
             // 
-            // button1
+            // replay
             // 
-            this.button1.BackColor = System.Drawing.Color.Orange;
-            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button1.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.button1.Location = new System.Drawing.Point(173, 273);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(131, 46);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Еще раз";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Visible = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.replay.BackColor = System.Drawing.Color.Orange;
+            this.replay.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.replay.FlatAppearance.BorderSize = 0;
+            this.replay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.replay.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.replay.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.replay.Location = new System.Drawing.Point(173, 273);
+            this.replay.Name = "replay";
+            this.replay.Size = new System.Drawing.Size(131, 46);
+            this.replay.TabIndex = 1;
+            this.replay.Text = "Еще раз";
+            this.replay.UseVisualStyleBackColor = false;
+            this.replay.Visible = false;
+            this.replay.Click += new System.EventHandler(this.button1_Click);
             // 
             // label2
             // 
@@ -190,7 +190,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.Label lblSpeed;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button replay;
         private System.Windows.Forms.Label label3;
     }
 }

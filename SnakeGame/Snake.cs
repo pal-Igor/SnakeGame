@@ -63,12 +63,12 @@ namespace SnakeGame
             }
             return false;
         }
-        public bool IsHitBorder(int width, int height)
+        public bool IsHitBorder(int maxXPos, int maxYPos)
         {
             for (int i = 0; i < MasSnake.Count; i++)
             {
                 if (MasSnake[i].X < 0 || MasSnake[i].Y < 0
-                        || MasSnake[i].X >= width || MasSnake[i].Y >= height)
+                        || MasSnake[i].X >= maxXPos || MasSnake[i].Y >= maxYPos)
                 {
                     return true;
                 }
