@@ -41,7 +41,7 @@ namespace SnakeGame
                 Settings.Score += Settings.Points;
                 return true;
             }
-            return false;            
+            return false;
         }
         public void Die()
         {
@@ -74,6 +74,37 @@ namespace SnakeGame
                 }
             }
             return false;
+        }
+        public void Move()
+        {
+            for (int i = MasSnake.Count - 1; i >= 0; i--)
+            {
+                //Move head
+                if (i == 0)
+                {
+                    switch (Settings.Direction)
+                    {
+                        case Direction.Right:
+                            MasSnake[i].X++;
+                            break;
+                        case Direction.Left:
+                            MasSnake[i].X--;
+                            break;
+                        case Direction.Up:
+                            MasSnake[i].Y--;
+                            break;
+                        case Direction.Down:
+                            MasSnake[i].Y++;
+                            break;
+                    }
+                }
+                else
+                {
+                    //Move body
+                    MasSnake[i].X = MasSnake[i - 1].X;
+                    MasSnake[i].Y = MasSnake[i - 1].Y;
+                }
+            }
         }
     }
 }

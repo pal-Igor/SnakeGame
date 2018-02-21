@@ -70,7 +70,7 @@ namespace SnakeGame
             //    }
             //    Food = new Point(random.Next(0, maxXPos), random.Next(0, maxYPos));
             //}
-            
+
         }
 
         private void UpdateScreen(object sender, EventArgs e)
@@ -103,54 +103,28 @@ namespace SnakeGame
                     Settings.Direction = Direction.Down;
                 }
 
-                MovePlayer();
+                SnakeMove();
             }
 
             panField.Refresh();
         }
 
-        private void MovePlayer()
+        private void SnakeMove()
         {
-            for (int i = Snake1.MasSnake.Count - 1; i >= 0; i--)
+            //Detect collission with game borders and snake tail.
+            if (Snake1.IsHitBorder(maxXPos, maxYPos) || Snake1.IsHitTail())
             {
-                //Move head
-                if (i == 0)
-                {
-                    switch (Settings.Direction)
-                    {
-                        case Direction.Right:
-                            Snake1[i].X++;
-                            break;
-                        case Direction.Left:
-                            Snake1[i].X--;
-                            break;
-                        case Direction.Up:
-                            Snake1[i].Y--;
-                            break;
-                        case Direction.Down:
-                            Snake1[i].Y++;
-                            break;
-                    }
-                    //Detect collission with game borders and snake tail.
-                    if (Snake1.IsHitBorder(maxXPos, maxYPos) || Snake1.IsHitTail())
-                    {
-                        Snake1.Die();
-                    }
-
-                    //Detect collision with food piece
-                    if (Snake1.Eat(Food))
-                    {
-                        lblScore.Text = Settings.Score.ToString();
-                        GenerateFood();
-                    }
-                }
-                else
-                {
-                    //Move body
-                    Snake1[i].X = Snake1[i -1].X;
-                    Snake1[i].Y = Snake1[i -1].Y;
-                }
+                Snake1.Die();
             }
+
+            //Detect collision with food piece
+            if (Snake1.Eat(Food))
+            {
+                lblScore.Text = Settings.Score.ToString();
+                GenerateFood();
+            }
+
+            Snake1.Move();
         }
 
         private void panField_Paint(object sender, PaintEventArgs e)
