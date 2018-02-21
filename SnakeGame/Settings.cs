@@ -13,8 +13,6 @@ namespace SnakeGame
         public static int Speed { get; set; }
         public static int Score { get; set; }
         public static int Points { get; set; }
-        public static bool GameOver { get; set; }
-        public static Direction Direction { get; set; }
 
         static Settings()
         {
@@ -27,8 +25,6 @@ namespace SnakeGame
             Speed = 10;
             Score = 0;
             Points = 1;
-            GameOver = false;
-            Direction = Direction.Down;
         }
     }
 }

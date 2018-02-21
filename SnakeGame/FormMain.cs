@@ -21,7 +21,7 @@ namespace SnakeGame
         {
             InitializeComponent();
 
-            Snake1 = new Snake(1, 2);
+            Snake1 = new Snake();
             Food = new Point(1, 2);
             random = new Random();
 
@@ -51,8 +51,7 @@ namespace SnakeGame
             gameTimer.Interval = 500 / Settings.Speed;
 
             //Create new player object
-            Snake1.Clear();
-            Snake1.CreateHead();
+            Snake1 = new Snake();
 
             lblScore.Text = Settings.Score.ToString();
             GenerateFood();
@@ -60,20 +59,23 @@ namespace SnakeGame
 
         private void GenerateFood()
         {
-            for (int i = 0; i < Snake1.MasSnake.Count; i++)
+            bool poinWasGenerated = false;
+            do
             {
-                if (Food.X != Snake1[i].X && Food.Y != Snake1[i].Y)
+                var newFood = new Point(random.Next(0, maxXPos), random.Next(0, maxYPos));
+                if (!Snake1.SnakeContainsPoint(newFood))
                 {
-                    continue;
+                    Food = newFood;
+                    poinWasGenerated = true;
                 }
-                Food = new Point(random.Next(0, maxXPos), random.Next(0, maxYPos));
-            }
+
+            } while (!poinWasGenerated);
         }
 
         private void UpdateScreen(object sender, EventArgs e)
         {
             //Check for Game Over
-            if (Settings.GameOver)
+            if (!Snake1.IsAlive)
             {
                 //Check if Enter is pressed
                 if (Input.KeyPressed(Keys.Enter))
@@ -83,22 +85,7 @@ namespace SnakeGame
             }
             else
             {
-                if (Input.KeyPressed(Keys.Right) && Settings.Direction != Direction.Left)
-                {
-                    Settings.Direction = Direction.Right;
-                }
-                else if (Input.KeyPressed(Keys.Left) && Settings.Direction != Direction.Right)
-                {
-                    Settings.Direction = Direction.Left;
-                }
-                else if (Input.KeyPressed(Keys.Up) && Settings.Direction != Direction.Down)
-                {
-                    Settings.Direction = Direction.Up;
-                }
-                else if (Input.KeyPressed(Keys.Down) && Settings.Direction != Direction.Up)
-                {
-                    Settings.Direction = Direction.Down;
-                }
+                Snake1.SetDirection();
 
                 //Detect collission with game borders and snake tail.
                 if (Snake1.IsHitBorder(maxXPos, maxYPos) || Snake1.IsHitTail())
@@ -123,46 +110,13 @@ namespace SnakeGame
         {
             Graphics field = e.Graphics;
 
-            if (!Settings.GameOver)
+            if (Snake1.IsAlive)
             {
-                int r = 255;
-                int g = 70;
-                int b = 0;
+                Snake1.DrawSnake(field);
 
-                //Draw snake
-                for (int i = 0; i < Snake1.MasSnake.Count; i++)
-                {
-                    Brush snakeColour;
-                    if (i == 0)
-                    {
-                        snakeColour = Brushes.OrangeRed;     //Draw head
-                    }
-                    else
-                    {
-                        Color myColor = Color.FromArgb(r, g, b);
-                        snakeColour = new SolidBrush(myColor);    //Rest of body
-                    }
-
-                    //Draw snake
-                    field.FillRectangle(snakeColour, new Rectangle(Snake1[i].X * Settings.Width,
-                         Snake1[i].Y * Settings.Height, Settings.Width, Settings.Height));
-
-                    //Draw Food
-                    field.FillRectangle(Brushes.Orange, new Rectangle(Food.X * Settings.Width,
-                        Food.Y * Settings.Height, Settings.Width, Settings.Height));
-
-                    if (g > 0)
-                    {
-                        g -= 7;
-                    }
-                    else
-                    {
-                        g += 7;
-                    }
-
-                    r -= 2;
-                    b += 3;
-                }
+                //Draw Food
+                field.FillRectangle(Brushes.Orange, new Rectangle(Food.X * Settings.Width, Food.Y * Settings.Height, 
+                    Settings.Width, Settings.Height));
             }
             else
             {
