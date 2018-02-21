@@ -22,8 +22,8 @@ namespace SnakeGame
         }
         public static void SetToDefaultSettings()
         {
-            Width = 25;
-            Height = 25;
+            Width = 20;
+            Height = 20;
             Speed = 10;
             Score = 0;
             Points = 1;

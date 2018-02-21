@@ -123,7 +123,6 @@ namespace SnakeGame
                 lblScore.Text = Settings.Score.ToString();
                 GenerateFood();
             }
-
             Snake1.Move();
         }
 
