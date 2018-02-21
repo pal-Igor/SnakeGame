@@ -29,12 +29,12 @@ namespace SnakeGame
             maxXPos = panField.Size.Width / Settings.Width;
             maxYPos = panField.Size.Height / Settings.Height;
 
-            //Установка скорости и таймера
+            //Set speed and timer
             gameTimer.Interval = 500 / Settings.Speed;
             gameTimer.Tick += UpdateScreen;
             gameTimer.Start();
 
-            trackBar1.Value = Settings.Speed;
+            //trackBar1.Value = Settings.Speed;
 
             StartGame();
         }
@@ -60,17 +60,14 @@ namespace SnakeGame
 
         private void GenerateFood()
         {
-            Food = new Point(random.Next(0, maxXPos), random.Next(0, maxYPos));
-
-            //for (int i = 0; i < Snake1.MasSnake.Count; i++)
-            //{
-            //    if (Food.X != Snake1[i].X && Food.Y != Snake1[i].Y)
-            //    {
-            //        continue;
-            //    }
-            //    Food = new Point(random.Next(0, maxXPos), random.Next(0, maxYPos));
-            //}
-
+            for (int i = 0; i < Snake1.MasSnake.Count; i++)
+            {
+                if (Food.X != Snake1[i].X && Food.Y != Snake1[i].Y)
+                {
+                    continue;
+                }
+                Food = new Point(random.Next(0, maxXPos), random.Next(0, maxYPos));
+            }
         }
 
         private void UpdateScreen(object sender, EventArgs e)
@@ -103,27 +100,23 @@ namespace SnakeGame
                     Settings.Direction = Direction.Down;
                 }
 
-                SnakeMove();
+                //Detect collission with game borders and snake tail.
+                if (Snake1.IsHitBorder(maxXPos, maxYPos) || Snake1.IsHitTail())
+                {
+                    Snake1.Die();
+                }
+
+                //Detect collision with food piece
+                if (Snake1.Eat(Food))
+                {
+                    lblScore.Text = Settings.Score.ToString();
+                    GenerateFood();
+                }
+
+                Snake1.Move();
             }
 
             panField.Refresh();
-        }
-
-        private void SnakeMove()
-        {
-            //Detect collission with game borders and snake tail.
-            if (Snake1.IsHitBorder(maxXPos, maxYPos) || Snake1.IsHitTail())
-            {
-                Snake1.Die();
-            }
-
-            //Detect collision with food piece
-            if (Snake1.Eat(Food))
-            {
-                lblScore.Text = Settings.Score.ToString();
-                GenerateFood();
-            }
-            Snake1.Move();
         }
 
         private void panField_Paint(object sender, PaintEventArgs e)
@@ -135,6 +128,7 @@ namespace SnakeGame
                 int r = 255;
                 int g = 70;
                 int b = 0;
+
                 //Draw snake
                 for (int i = 0; i < Snake1.MasSnake.Count; i++)
                 {
@@ -156,6 +150,7 @@ namespace SnakeGame
                     //Draw Food
                     field.FillRectangle(Brushes.Orange, new Rectangle(Food.X * Settings.Width,
                         Food.Y * Settings.Height, Settings.Width, Settings.Height));
+
                     if (g > 0)
                     {
                         g -= 7;

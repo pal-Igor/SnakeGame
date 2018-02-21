@@ -129,7 +129,7 @@
             this.trackBar1.Size = new System.Drawing.Size(159, 45);
             this.trackBar1.TabIndex = 100000;
             this.trackBar1.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackBar1.Value = 1;
+            this.trackBar1.Value = 8;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
             // lblSpeed
@@ -150,9 +150,9 @@
             this.label3.ForeColor = System.Drawing.Color.DarkOrange;
             this.label3.Location = new System.Drawing.Point(625, 64);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(38, 25);
+            this.label3.Size = new System.Drawing.Size(25, 25);
             this.label3.TabIndex = 7;
-            this.label3.Text = "10";
+            this.label3.Text = "8";
             // 
             // FormMain
             // 

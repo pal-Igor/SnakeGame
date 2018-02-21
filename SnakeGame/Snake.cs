@@ -38,6 +38,8 @@ namespace SnakeGame
             if (MasSnake[0].X == food.X && MasSnake[0].Y == food.Y)
             {
                 MasSnake.Add(food);
+
+                //Update score
                 Settings.Score += Settings.Points;
                 return true;
             }
