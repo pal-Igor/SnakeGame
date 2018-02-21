@@ -157,7 +157,7 @@ namespace SnakeGame
 
         private void panField_Paint(object sender, PaintEventArgs e)
         {
-            Graphics field = panField.CreateGraphics();
+            Graphics field = e.Graphics;
 
             if (!Settings.GameOver)
             {
